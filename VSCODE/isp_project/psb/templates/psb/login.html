@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Dulu WOII!!</title>
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background: linear-gradient(to right, #00b4d8, #03045e);
+            font-family: 'Roboto', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animasi halus pada kontainer */
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1.5s ease-out, floating 4s ease-in-out infinite;
+        }
+
+        /* Floating animation */
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Heading animasi tambahan */
+        .login-container h2 {
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #03045e;
+            animation: slideInRight 1s ease-in-out;
+        }
+
+        /* Input animasi */
+        .form-control {
+            border-radius: 25px;
+            padding: 10px 20px;
+            border: 1px solid #03045e;
+            animation: fadeInUp 1.5s ease;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Hover untuk input */
+        .form-control:focus {
+            border-color: #00b4d8;
+            box-shadow: 0px 0px 8px rgba(0, 180, 216, 0.6);
+        }
+
+        /* Button animasi */
+        .btn-custom {
+            width: 100%;
+            background-color: #00b4d8;
+            color: white;
+            border-radius: 25px;
+            padding: 10px;
+            font-weight: 500;
+            border: none;
+            transition: background-color 0.4s ease, transform 0.3s ease;
+            animation: slideInUp 1.2s ease-out;
+        }
+
+        /* Hover untuk button */
+        .btn-custom:hover {
+            background-color: #03045e;
+            color: white;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0px 5px 20px rgba(0, 180, 216, 0.5);
+        }
+
+        /* Teks tambahan */
+        .form-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            animation: fadeIn 2s ease-out;
+        }
+
+        /* Link hover */
+        .form-text a {
+            color: #00b4d8;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .form-text a:hover {
+            color: #ffcb42;
+            text-decoration: underline;
+        }
+
+        /* Logo fade in */
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo img {
+            width: 120px;
+            opacity: 0;
+            animation: fadeIn 2s forwards 1s;
+        }
+
+        /* Background animasi */
+        .custom-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image: url('https://myacswineto.net/theme/default/images/1659708952_logo_acs.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.05;
+            z-index: -1;
+            animation: floatBg 10s infinite ease-in-out;
+        }
+
+        /* Animasi partikel */
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #00b4d8;
+            border-radius: 50%;
+            animation: moveParticle 15s infinite linear;
+            z-index: 0;
+        }
+
+        .particle:nth-child(2) {
+            background-color: #03045e;
+            width: 15px;
+            height: 15px;
+            animation-duration: 18s;
+        }
+
+        .particle:nth-child(3) {
+            background-color: #ffcb42;
+            animation-duration: 12s;
+        }
+
+        /* Partikel bergerak */
+        @keyframes moveParticle {
+            0% { transform: translate(-100px, 100px); }
+            50% { transform: translate(400px, -400px); }
+            100% { transform: translate(-200px, 500px); }
+        }
+
+        /* Background floating */
+        @keyframes floatBg {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Animasi fade in dan up */
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Animasi slide in */
+        @keyframes slideInRight {
+            0% { opacity: 0; transform: translateX(100px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInUp {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            display: none;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #00b4d8;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        /* Spin animation for loader */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Background Particles -->
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+
+<!-- Background Dekorasi -->
+<div class="custom-background"></div>
+
+<!-- Loading Spinner -->
+<div class="loading-spinner" id="loadingSpinner"></div>
+
+<div class="login-container">
+    <!-- Logo -->
+    <div class="login-logo">
+        <img src="https://myacswineto.net/theme/default/images/1659708952_logo_acs.png" alt="Logo ACS Wineto">
+    </div>
+
+    <!-- Form Title -->
+    <h2>Login ke ACS Wineto</h2>
+
+    <!-- Form Login -->
+    <form method="post" id="loginForm">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+            <input type="text" name="username" class="form-control" placeholder="Username" required>
+        </div>
+        <div class="form-group mb-3">
+            <input type="password" name="password" class="form-control" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-custom">Masuk</button>
+    </form>
+
+    <!-- Forgot Password Link -->
+    <div class="form-text">
+        <p>Lu Lupa PW?  <a href="https://wa.me/6283896100570?text=Halo%20Dandi,%20saya%20lupa%20password%20untuk%20akun%20saya%20di%20ACS%20Wineto." target="_blank">Chat Yang Bikin Web</a></p>
+    </div>
+</div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS untuk Animasi Klik Login -->
+<script>
+    const loginForm = document.getElementById('loginForm');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+
+    loginForm.addEventListener('submit', function (e) {
+        // Munculkan animasi loading
+        loadingSpinner.style.display = 'block';
+    });
+</script>
+
+</body>
+</html>

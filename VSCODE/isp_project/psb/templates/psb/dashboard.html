@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | ACS WINETO</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #141E30, #243B55);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 42px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            color: #fff;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Navbar for User Info and Profile */
+        .navbar {
+            background-color: #0d1117;
+            padding: 10px 30px;
+        }
+
+        .navbar .user-info {
+            color: #fff;
+            font-size: 18px;
+            margin-right: 15px;
+        }
+
+        .navbar .dropdown-menu {
+            background-color: #0d1117;
+            border: none;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .dropdown-menu a {
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar .dropdown-menu a:hover {
+            background-color: #243B55;
+        }
+
+        /* Animasi cards */
+        .card {
+            border-radius: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
+            overflow: hidden;
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 1.2s forwards;
+            transform: translateY(30px);
+        }
+
+        /* Delay animasi saat halaman dimuat */
+        .card:nth-child(1) { animation-delay: 0.2s; }
+        .card:nth-child(2) { animation-delay: 0.4s; }
+        .card:nth-child(3) { animation-delay: 0.6s; }
+        .card:nth-child(4) { animation-delay: 0.8s; }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            transition: transform 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+        }
+
+        .card:hover .card-icon {
+            transform: rotate(360deg);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .more-info {
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .more-info::after {
+            content: '⮕';
+            display: inline-block;
+            margin-left: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card:hover .more-info::after {
+            transform: translateX(5px);
+        }
+
+        /* Animation for fade-in and up */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Flexbox for Cards */
+        .row-cols-md-4 {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #0d1117;
+            color: #8b949e;
+            font-size: 14px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Custom card colors */
+        .blue {
+            background-color: #0056d6;
+        }
+
+        .yellow {
+            background-color: #ffc107;
+        }
+
+        .green {
+            background-color: #28a745;
+        }
+
+        .red {
+            background-color: #dc3545;
+        }
+
+        /* Background animation */
+        .background-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(145deg, #243B55, #141E30);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Smooth page transition */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #141E30;
+            z-index: 9999;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .page-transition.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Background Animation -->
+<div class="background-animation"></div>
+
+<!-- Page Transition Animation -->
+<div class="page-transition" id="pageTransition"></div>
+
+<!-- Navbar with User Info -->
+<nav class="navbar">
+    <div class="d-flex justify-content-between align-items-center w-100">
+        <span class="user-info">Welcome, {{ user.username }}</span>
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle text-white" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user-circle fa-lg"></i> Profile
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user"></i> My Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="dashboard-header">
+        Dashboard Overview
+    </div>
+    <div class="row row-cols-1 row-cols-md-4 g-4 text-center">
+
+        <div class="col">
+            <a href="{% url 'psb' %}" class="text-decoration-none">
+                <div class="card blue">
+                    <div class="card-icon">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="card-title">
+                        Tambahkan PSB
+                    </div>
+                    <div class="card-text">
+                        Tambah pemasangan baru
+                    </div>
+                    <div class="more-info">
+                        More info
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col">
+            <a href="{% url 'maintenance_tambah' %}" class="text-decoration-none">
+                <div class="card yellow">
+                    <div class="card-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="card-title">
+                        Tambahkan Maintenance
+                    </div>
+                    <div class="card-text">
+                        Tambah maintenance baru
+                    </div>
+                    <div class="more-info">
+                        More info
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col">
+            <a href="{% url 'pemasangan_list' %}" class="text-decoration-none">
+                <div class="card green">
+                    <div class="card-icon">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <div class="card-title">
+                        List Pemasangan
+                    </div>
+                    <div class="card-text">
+                        Lihat daftar pemasangan
+                    </div>
+                    <div class="more-info">
+                        More info
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col">
+            <a href="{% url 'maintenance_list' %}" class="text-decoration-none">
+                <div class="card red">
+                    <div class="card-icon">
+                        <i class="fas fa-list-alt"></i>
+                    </div>
+                    <div class="card-title">
+                        List Maintenance
+                    </div>
+                    <div class="card-text">
+                        Lihat daftar maintenance
+                    </div>
+                    <div class="more-info">
+                        More info
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    Copyright © 2024 <strong>ACS WINETO</strong>. All rights reserved.
+</div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS for Smooth Transitions -->
+<script>
+    // Smooth page load transition
+    window.onload = function () {
+        const pageTransition = document.getElementById('pageTransition');
+        pageTransition.classList.add('fade-out');
+    };
+
+    // Smooth link click transition
+    document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            const pageTransition = document.getElementById('pageTransition');
+            pageTransition.classList.remove('fade-out');
+            setTimeout(() => {
+                window.location.href = href;
+            }, 500); // Adjust for smooth transition
+        });
+    });
+</script>
+
+</body>
+</html>

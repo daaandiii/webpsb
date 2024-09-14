@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Pemasangan Baru</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background: linear-gradient(180deg, #e0eaff 0%, #007bff 100%);
+            min-height: 100vh;
+            transition: background 2s ease;
+        }
+
+        /* Scroll effect for smoother gradient transition */
+        body.scrolled {
+            background: linear-gradient(180deg, #00c2cb 0%, #007bff 80%);
+        }
+
+        .container {
+            margin-top: 20px;
+            max-width: 1200px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .filter-section, .card {
+            margin-bottom: 20px;
+        }
+
+        .filter-section {
+            padding: 15px;
+            background-color: #aac5ff;
+            border-radius: 8px;
+        }
+
+        .filter-section label {
+            margin-right: 10px;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px;
+            padding: 10px 20px;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+
+        .card-header {
+            padding: 15px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .card-body {
+            padding: 20px;
+            background-color: #f4f7f9;
+        }
+
+        .status-positive {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-negative {
+            color: red;
+            font-weight: bold;
+        }
+
+        .status-neutral {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Section Colors */
+        .card-header.bg-target {
+            background-color: #00c2cb; /* Cyan */
+        }
+
+        .card-header.bg-paket {
+            background-color: #ffc107; /* Yellow */
+        }
+
+        .card-header.bg-pemasangan {
+            background-color: #34c759; /* Green */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Title -->
+    <div class="section-title">
+        Daftar Pemasangan Baru
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <form method="GET" class="d-flex justify-content-center">
+            <div>
+                <label for="bulan">Bulan:</label>
+                <select name="bulan" id="bulan" class="form-select form-select-sm">
+                    <option value="1" {% if selected_bulan == 1 %}selected{% endif %}>January</option>
+                    <option value="2" {% if selected_bulan == 2 %}selected{% endif %}>February</option>
+                    <option value="3" {% if selected_bulan == 3 %}selected{% endif %}>March</option>
+                    <option value="4" {% if selected_bulan == 4 %}selected{% endif %}>April</option>
+                    <option value="5" {% if selected_bulan == 5 %}selected{% endif %}>May</option>
+                    <option value="6" {% if selected_bulan == 6 %}selected{% endif %}>June</option>
+                    <option value="7" {% if selected_bulan == 7 %}selected{% endif %}>July</option>
+                    <option value="8" {% if selected_bulan == 8 %}selected{% endif %}>August</option>
+                    <option value="9" {% if selected_bulan == 9 %}selected{% endif %}>September</option>
+                    <option value="10" {% if selected_bulan == 10 %}selected{% endif %}>October</option>
+                    <option value="11" {% if selected_bulan == 11 %}selected{% endif %}>November</option>
+                    <option value="12" {% if selected_bulan == 12 %}selected{% endif %}>December</option>
+                </select>
+            </div>
+            <div class="mx-3">
+                <label for="tahun">Tahun:</label>
+                <select name="tahun" id="tahun" class="form-select form-select-sm">
+                    {% for year in years %}
+                        <option value="{{ year }}" {% if selected_tahun == year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-custom">Filter</button>
+        </form>
+    </div>
+
+    <!-- Informasi Target Bulanan -->
+    <div class="card">
+        <div class="card-header bg-target">
+            Informasi Target Bulanan
+        </div>
+        <div class="card-body">
+            {% if target_bulanan %}
+            <p><strong>Target Income:</strong> Rp{{ target_bulanan.target_income }}</p>
+            <p><strong>Current Income:</strong> Rp{{ total_income_all }}</p>
+            <p><strong>Sisa Income:</strong> 
+                {% if sisa_income > 0 %}
+                    <span class="status-positive">Lebih Rp{{ sisa_income_abs }}</span>
+                {% elif sisa_income == 0 %}
+                    <span class="status-neutral">Tercapai</span>
+                {% else %}
+                    <span class="status-negative">Kurang Rp{{ sisa_income_abs }}</span>
+                {% endif %}
+            </p>
+            <p><strong>Target User:</strong> {{ target_user }}</p>
+            <p><strong>Sisa User:</strong> 
+                {% if sisa_user > 0 %}
+                    <span class="status-positive">Lebih {{ sisa_user_abs }} User</span>
+                {% elif sisa_user == 0 %}
+                    <span class="status-neutral">Tercapai</span>
+                {% else %}
+                    <span class="status-negative">Kurang {{ sisa_user_abs }} User</span>
+                {% endif %}
+            </p>
+            <p><strong>User Saat Ini:</strong> {{ total_user_all }}</p>
+            {% else %}
+                <p>Tidak ada target untuk bulan yang dipilih.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Informasi Paket dan Total User -->
+    <div class="card">
+        <div class="card-header bg-paket">
+            Informasi Paket dan Total User
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Paket Layanan</th>
+                        <th>Jumlah User</th>
+                        <th>Total Income</th>
+                        <th>Konversi (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for paket in paket_data %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ paket.paket_layanan__nama_paket }}</td>
+                        <td>{{ paket.total_user }}</td>
+                        <td>Rp{{ paket.total_income }}</td>
+                        <td>{{ paket.konversi|floatformat:2 }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>            
+        </div>
+    </div>
+
+    <!-- Daftar Pemasangan Baru -->
+    <div class="card">
+        <div class="card-header bg-pemasangan">
+            Daftar Pemasangan Baru
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Alamat</th>
+                        <th>Tanggal Pasang</th>
+                        <th>Paket Layanan</th>
+                        <th>Tipe Modem</th>
+                        <th>Serial Number Modem</th>
+                        <th>Teknisi</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pemasangan in pemasangan_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ pemasangan.nama_pelanggan }}</td>
+                        <td>{{ pemasangan.alamat }}</td>
+                        <td>{{ pemasangan.tanggal_pasang|date:"d M, Y" }}</td>
+                        <td>{{ pemasangan.paket_layanan.nama_paket }}</td>
+                        <td>{{ pemasangan.modem.tipe_modem }}</td>
+                        <td>{{ pemasangan.serial_number_modem }}</td>
+                        <td>
+                            {% for teknisi in pemasangan.teknisi.all %}
+                                {{ teknisi.nama_teknisi }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{{ pemasangan.keterangan }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>            
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Add scroll effect to change background gradient
+    window.addEventListener("scroll", function() {
+        const body = document.body;
+        const scrollTop = window.scrollY;
+        const threshold = 150;
+
+        if (scrollTop > threshold) {
+            body.classList.add('scrolled');
+        } else {
+            body.classList.remove('scrolled');
+        }
+    });
+</script>
+</body>
+</html>
